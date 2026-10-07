@@ -20,7 +20,7 @@ export const site = {
     { text: "ここに置いていきます。" },
   ],
   skills: ["TypeScript", "React", "Next.js", "Tailwind CSS", "Node.js", "Git / GitHub", "HTML / CSS"],
-  email: "kentokikuchi34@gmail.com",
+  email: "",
   social: { github: "K1ndar00" },
   // 記事を書いているサービスのユーザー名。入力すると記事一覧に自動で取り込まれます。
   articles: { note: "", qiita: "", zenn: "" },
