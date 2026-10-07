@@ -1,109 +1,59 @@
-import { getAllPosts, getAllCategories } from "@/lib/markdown";
-import { getNoteArticles } from "@/lib/note";
-import { PostList } from "@/components/PostList";
-import { NoteCard } from "@/components/NoteCard";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { getAllArticles } from "@/lib/articles";
+import { sourceLabel } from "@/lib/feeds";
+import { ArticleRow } from "@/components/ArticleRow";
+import { Reveal } from "@/components/motion/Reveal";
+import { Eyebrow } from "@/components/ui";
 
 export const revalidate = 3600;
-
-export const metadata = {
-  title: "Blog | My Site",
-  description: "記事と日々の記録",
-};
-
-const NOTE_USERNAME = process.env.NOTE_USERNAME ?? "";
+export const metadata = { title: "Blog", description: "日記と記事の一覧" };
 
 export default async function BlogPage({
   searchParams,
 }: {
-  searchParams: Promise<{ category?: string }>;
+  searchParams: Promise<{ source?: string }>;
 }) {
-  const { category } = await searchParams;
-  const allPosts = getAllPosts();
-  const categories = getAllCategories();
-  const posts = category
-    ? allPosts.filter((p) => p.category === category)
-    : allPosts;
+  const { source } = await searchParams;
+  const all = await getAllArticles();
+  const sources = [...new Set(all.map((a) => a.source))];
+  const items = source ? all.filter((a) => a.source === source) : all;
 
-  const noteArticles = await getNoteArticles(NOTE_USERNAME, 6);
+  const chip = (active: boolean) =>
+    `inline-flex min-h-10 items-center rounded-full border px-4 text-sm transition-colors ${
+      active
+        ? "border-emerald bg-emerald text-black font-medium"
+        : "border-line text-muted hover:border-emerald/60 hover:text-fg"
+    }`;
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12 space-y-16">
-      {/* ── Markdown 記事 ── */}
-      <section className="space-y-8">
-        <div className="space-y-2">
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
-            Blog
-          </h1>
-          <p className="text-slate-600 dark:text-slate-400">
-            思考の記録と日々の気づきを書いています。
-          </p>
-        </div>
+    <div className="mx-auto max-w-5xl px-5 pb-32 pt-36">
+      <Reveal>
+        <Eyebrow>Blog</Eyebrow>
+        <h1 className="text-[clamp(2.6rem,8vw,6rem)] font-semibold leading-none tracking-[-0.04em]">
+          書いたもの。
+        </h1>
+        <p className="mt-6 max-w-xl text-muted">
+          このサイトの日記に加えて、note・Qiita・Zenn の記事を自動で取り込んでいます。
+        </p>
+      </Reveal>
 
-        {/* Category filter */}
-        {categories.length > 0 && (
-          <div className="flex flex-wrap gap-2">
-            <Link
-              href="/blog"
-              className={`rounded-full px-3 py-1 text-sm font-medium transition-colors ${
-                !category
-                  ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900"
-                  : "border border-slate-300 text-slate-600 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
-              }`}
-            >
-              すべて
-            </Link>
-            {categories.map((cat) => (
-              <Link
-                key={cat}
-                href={`/blog?category=${encodeURIComponent(cat)}`}
-                className={`rounded-full px-3 py-1 text-sm font-medium transition-colors ${
-                  category === cat
-                    ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900"
-                    : "border border-slate-300 text-slate-600 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
-                }`}
-              >
-                {cat}
-              </Link>
-            ))}
-          </div>
-        )}
+      <nav aria-label="掲載元で絞り込み" className="mt-12 flex flex-wrap gap-2">
+        <Link href="/blog" className={chip(!source)}>
+          すべて
+        </Link>
+        {sources.map((s) => (
+          <Link key={s} href={`/blog?source=${s}`} className={chip(source === s)}>
+            {sourceLabel[s]}
+          </Link>
+        ))}
+      </nav>
 
-        <PostList posts={posts} />
-      </section>
-
-      {/* ── note 記事 ── */}
-      {noteArticles.length > 0 && (
-        <section className="space-y-6">
-          <div className="flex items-center justify-between">
-            <div className="space-y-1">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">
-                note の記事
-              </h2>
-              <p className="text-sm text-slate-500 dark:text-slate-400">
-                note で書いた記事の一覧です。
-              </p>
-            </div>
-            {NOTE_USERNAME && (
-              <a
-                href={`https://note.com/${NOTE_USERNAME}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1 text-sm text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-colors"
-              >
-                note を見る <ArrowUpRight size={14} />
-              </a>
-            )}
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-2">
-            {noteArticles.map((article) => (
-              <NoteCard key={article.id} article={article} />
-            ))}
-          </div>
-        </section>
-      )}
+      <div className="mt-6 border-t border-line">
+        {items.length === 0 && <p className="py-12 text-muted">まだ記事がありません。</p>}
+        {items.map((a) => (
+          <ArticleRow key={a.href} item={a} />
+        ))}
+      </div>
     </div>
   );
 }
