@@ -1,38 +1,49 @@
-import { getAllWorksFromNotion } from "@/lib/notion";
-import { ProjectCard } from "@/components/ProjectCard";
+import Link from "next/link";
+import { getAllWorks } from "@/lib/content";
+import { Reveal } from "@/components/motion/Reveal";
+import { Eyebrow, Tag, fmtDate } from "@/components/ui";
 
-export const revalidate = 3600;
+export const metadata = { title: "Works", description: "作ったものの一覧" };
 
-export const metadata = {
-  title: "Works | My Site",
-  description: "制作した作品の一覧",
-};
-
-export default async function WorksPage() {
-  const projects = await getAllWorksFromNotion();
-
+export default function WorksPage() {
+  const works = getAllWorks();
   return (
-    <div className="mx-auto max-w-5xl px-4 py-12">
-      <div className="mb-10 space-y-2">
-        <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
-          Works
+    <div className="mx-auto max-w-5xl px-5 pb-32 pt-36">
+      <Reveal>
+        <Eyebrow>Works</Eyebrow>
+        <h1 className="text-[clamp(2.6rem,8vw,6rem)] font-semibold leading-none tracking-[-0.04em]">
+          作ったもの。
         </h1>
-        <p className="text-slate-600 dark:text-slate-400">
-          これまでに制作した作品をご紹介します。
-        </p>
+      </Reveal>
+      <div className="mt-16 grid gap-5 md:grid-cols-2">
+        {works.map((w, i) => (
+          <Reveal key={w.slug} delay={(i % 2) * 0.08}>
+            <Link
+              href={`/works/${w.slug}`}
+              className="group flex h-full flex-col gap-4 rounded-[1.75rem] border border-line bg-surface p-8 transition-colors hover:border-emerald/60"
+            >
+              <div className="flex items-start justify-between">
+                <span className="font-mono text-5xl font-semibold text-white/15">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="font-mono text-xs text-muted">{fmtDate(w.date)}</span>
+              </div>
+              <h2 className="text-2xl font-semibold tracking-tight">{w.title}</h2>
+              <p className="line-clamp-3 text-sm text-muted">{w.description}</p>
+              {(w.role || w.period) && (
+                <p className="text-xs text-muted">
+                  {[w.role, w.period].filter(Boolean).join(" ・ ")}
+                </p>
+              )}
+              <div className="mt-auto flex flex-wrap gap-2 pt-2">
+                {w.tags.map((t) => (
+                  <Tag key={t}>{t}</Tag>
+                ))}
+              </div>
+            </Link>
+          </Reveal>
+        ))}
       </div>
-
-      {projects.length === 0 ? (
-        <p className="text-center text-slate-500 dark:text-slate-400 py-16">
-          まだ作品がありません。
-        </p>
-      ) : (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {projects.map((p) => (
-            <ProjectCard key={p.slug} project={p} />
-          ))}
-        </div>
-      )}
     </div>
   );
 }
