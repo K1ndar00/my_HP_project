@@ -34,30 +34,17 @@ export default async function Home() {
         </section>
       )}
 
-      {articles.length > 0 && (
-        <section className="mx-auto max-w-5xl px-5 py-24">
-          <Eyebrow>Writing</Eyebrow>
-          <div className="flex items-end justify-between gap-4">
-            <h2 className={h2}>書いたもの。</h2>
-            <Link href="/blog" className={moreLink}>すべて見る →</Link>
-          </div>
-          <div className="mt-12 border-t border-line">
-            {articles.map((a) => (
-              <ArticleRow key={a.href} item={a} />
-            ))}
-          </div>
-        </section>
-      )}
-
-      <section className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-6 border-t border-line px-5 py-16">
-        <p className="text-xl font-semibold tracking-tight">話しかけてもらえたら嬉しい。</p>
-        <div className="flex gap-3 text-sm">
-          <Link href="/about" className="rounded-full border border-line px-5 py-2.5 transition-colors hover:border-emerald/60 hover:text-emerald">
-            About
-          </Link>
-          <Link href="/contact" className="rounded-full bg-emerald px-5 py-2.5 font-semibold text-black transition-colors hover:bg-white">
-            Contact
-          </Link>
+      <section className="mx-auto max-w-5xl px-5 py-24">
+        <Eyebrow>Blog</Eyebrow>
+        <div className="flex items-end justify-between gap-4">
+          <h2 className={h2}>書いたもの。</h2>
+          <Link href="/blog" className={moreLink}>すべて見る →</Link>
+        </div>
+        <div className="mt-12 border-t border-line">
+          {articles.length === 0 && <p className="py-10 text-muted">まだ記事がありません。</p>}
+          {articles.map((a) => (
+            <ArticleRow key={a.href} item={a} />
+          ))}
         </div>
       </section>
     </>
