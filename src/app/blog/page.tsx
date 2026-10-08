@@ -2,7 +2,6 @@ import Link from "next/link";
 import { getAllArticles } from "@/lib/articles";
 import { sourceLabel } from "@/lib/feeds";
 import { ArticleRow } from "@/components/ArticleRow";
-import { Reveal } from "@/components/motion/Reveal";
 import { Eyebrow } from "@/components/ui";
 
 export const revalidate = 3600;
@@ -27,7 +26,6 @@ export default async function BlogPage({
 
   return (
     <div className="mx-auto max-w-5xl px-5 pb-32 pt-36">
-      <Reveal>
         <Eyebrow>Blog</Eyebrow>
         <h1 className="text-[clamp(2.6rem,8vw,6rem)] font-semibold leading-none tracking-[-0.04em]">
           書いたもの。
@@ -35,7 +33,6 @@ export default async function BlogPage({
         <p className="mt-6 max-w-xl text-muted">
           このサイトの日記に加えて、note・Qiita・Zenn の記事を自動で取り込んでいます。
         </p>
-      </Reveal>
 
       <nav aria-label="掲載元で絞り込み" className="mt-12 flex flex-wrap gap-2">
         <Link href="/blog" className={chip(!source)}>
