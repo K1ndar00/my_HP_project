@@ -6,16 +6,16 @@ import { site } from "@/config/site";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
-/** スクロール連動の演出は、この最初の画面だけ */
+/** スクロール連動の演出は、この最初の画面だけ。画面に固定せず、内容の高さに合わせる */
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
 
   // スクロールに合わせて、名前は縮みながら薄くなり、光は広がる
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.55]);
-  const opacity = useTransform(scrollYProgress, [0, 0.65], [1, 0]);
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "-22%"]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.86]);
+  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "14%"]);
   const glowScale = useTransform(scrollYProgress, [0, 1], [1, 2.2]);
   const glowY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
   const cueOpacity = useTransform(scrollYProgress, [0, 0.12], [1, 0]);
@@ -23,13 +23,15 @@ export function Hero() {
   const dyn = reduce ? undefined : { scale, opacity, y };
 
   return (
-    <section ref={ref} className={reduce ? "h-screen" : "h-[190vh]"}>
-      <div className="sticky top-0 flex h-screen items-center overflow-hidden px-5">
+    <section
+      ref={ref}
+      className="relative flex min-h-[min(100svh,52rem)] items-center overflow-hidden px-5 pb-24 pt-28"
+    >
         {/* 背景の光（エメラルドと補色のローズ） */}
         <motion.div
           aria-hidden
           style={reduce ? undefined : { scale: glowScale, y: glowY }}
-          className="pointer-events-none absolute inset-0"
+          className="pointer-events-none absolute inset-0 [mask-image:linear-gradient(to_bottom,#000_55%,transparent)]"
         >
           <div className="absolute left-[8%] top-[18%] size-[46vmax] rounded-full bg-emerald-deep/25 blur-[120px]" />
           <div className="absolute bottom-[6%] right-[6%] size-[38vmax] rounded-full bg-rose/20 blur-[130px]" />
@@ -112,7 +114,6 @@ export function Hero() {
             />
           </span>
         </motion.div>
-      </div>
     </section>
   );
 }
