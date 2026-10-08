@@ -14,7 +14,7 @@ export function Navbar() {
         </Link>
         <nav aria-label="メイン" className="flex items-center gap-1 text-xs">
           {navItems.map(({ href, label }) => {
-            const active = !href.includes("#") && pathname.startsWith(href);
+            const active = pathname.startsWith(href);
             return (
               <Link
                 key={href}

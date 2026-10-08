@@ -4,21 +4,8 @@ export const site = {
   nameLines: ["Kento", "Kikuchi"],
   role: "Junior Engineer",
   tagline: "駆け出しエンジニア。",
-  heroSub: "作って、壊して、直して、また作る。",
-  // スクロールすると 1 フレーズずつ浮かび上がる文章。accent: true で強調（グラデーション）
-  statement: [
-    { text: "駆け出しエンジニアです。" },
-    { text: "いまは React を学びながら、" },
-    { text: "小さなアプリを作っています。" },
-    { text: "作っているのは、" },
-    { text: "最初の一歩を小さくする", accent: true },
-    { text: "Todo アプリ。" },
-    { text: "コードは AI と書く。" },
-    { text: "何を作るか、どう分けるかは、" },
-    { text: "自分で考える。", accent: true },
-    { text: "作ったものと、考えたことを、" },
-    { text: "ここに置いていきます。" },
-  ],
+  // About ページの文章。短く、1 行ずつ。
+  about: ["駆け出しエンジニアです。", "手を動かしながら、学んでいます。"],
   skills: ["TypeScript", "React", "Next.js", "Tailwind CSS", "Node.js", "Git / GitHub", "HTML / CSS"],
   email: "",
   social: { github: "K1ndar00" },
@@ -29,6 +16,6 @@ export const site = {
 export const navItems = [
   { href: "/works", label: "Works" },
   { href: "/blog", label: "Blog" },
-  { href: "/#about", label: "About" },
-  { href: "/#contact", label: "Contact" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
 ] as const;
