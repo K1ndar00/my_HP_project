@@ -7,7 +7,6 @@ export const site = {
   // About ページの文章。短く、1 行ずつ。
   about: ["駆け出しエンジニアです。", "手を動かしながら、学んでいます。"],
   skills: ["TypeScript", "React", "Next.js", "Tailwind CSS", "Node.js", "Git / GitHub", "HTML / CSS"],
-  email: "",
   social: { github: "K1ndar00" },
   // 記事を書いているサービスのユーザー名。入力すると記事一覧に自動で取り込まれます。
   articles: { note: "", qiita: "", zenn: "" },
@@ -17,5 +16,4 @@ export const navItems = [
   { href: "/works", label: "Works" },
   { href: "/blog", label: "Blog" },
   { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
 ] as const;
