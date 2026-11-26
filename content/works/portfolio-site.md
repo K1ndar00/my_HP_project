@@ -1,6 +1,6 @@
 ---
 title: "パーソナルポートフォリオサイト"
-description: "Next.js と Tailwind CSS を使って構築したパーソナルサイト。作品紹介と日記機能を持つ。"
+description: "Next.js と Tailwind CSS を使って構築したパーソナルサイト。"
 date: "2026-10-07"
 tags: ["Next.js", "TypeScript", "Tailwind CSS"]
 github: "https://github.com/K1ndar00/my_HP_project"
