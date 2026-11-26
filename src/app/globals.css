@@ -78,3 +78,15 @@ body {
 .prose pre code { background: none; padding: 0; }
 .prose blockquote { border-left: 2px solid var(--emerald-deep); padding-left: 1em; color: var(--muted); }
 .prose img { border-radius: 14px; }
+
+/* 強調したい注記(例: 「現在は新規登録を停止中」等)を目立たせる箱 */
+.prose .callout {
+  border: 1px solid color-mix(in srgb, var(--rose) 40%, transparent);
+  border-left: 3px solid var(--rose);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--rose) 8%, transparent);
+  padding: 0.9em 1.2em;
+  color: var(--fg);
+  font-size: 0.95em;
+}
+.prose .callout strong { color: var(--rose); }
