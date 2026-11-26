@@ -40,6 +40,20 @@ body {
 ::selection { background: var(--emerald-deep); color: #000; }
 :focus-visible { outline: 2px solid var(--emerald); outline-offset: 3px; border-radius: 6px; }
 
+/* Hero の登場アニメーション */
+@keyframes fade-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes rise { from { transform: translateY(110%); } to { transform: translateY(0); } }
+@keyframes bob { 0%, 100% { transform: translateY(-100%); } 50% { transform: translateY(200%); } }
+
+.animate-fade-up { animation: fade-up 1s cubic-bezier(.16,1,.3,1) both; }
+.animate-rise { animation: rise 1.2s cubic-bezier(.16,1,.3,1) both; }
+.animate-bob { animation: bob 1.8s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up, .animate-rise { animation: none; }
+  .animate-bob { animation: none; }
+}
+
 /* エメラルド → ローズのグラデーション文字 */
 .grad-text {
   background: linear-gradient(100deg, var(--emerald) 10%, #7ee8c3 40%, var(--rose) 95%);

@@ -1,19 +1,16 @@
 import Link from "next/link";
-import { getAllWorks } from "@/lib/content";
-import { getAllArticles } from "@/lib/articles";
-import { Hero } from "@/components/motion/Hero";
+import { getAllWorks, getAllPosts } from "@/lib/content";
+import { Hero } from "@/components/Hero";
 import { WorkCard } from "@/components/WorkCard";
 import { ArticleRow } from "@/components/ArticleRow";
 import { Eyebrow } from "@/components/ui";
 
-export const revalidate = 3600;
-
 const moreLink = "pb-2 text-sm text-muted transition-colors hover:text-emerald";
 const h2 = "text-[clamp(2.2rem,6vw,4.5rem)] font-semibold leading-none tracking-[-0.03em]";
 
-export default async function Home() {
+export default function Home() {
   const works = getAllWorks();
-  const articles = await getAllArticles(4);
+  const posts = getAllPosts().slice(0, 4);
 
   return (
     <>
@@ -41,9 +38,9 @@ export default async function Home() {
           <Link href="/blog" className={moreLink}>すべて見る →</Link>
         </div>
         <div className="mt-12 border-t border-line">
-          {articles.length === 0 && <p className="py-10 text-muted">まだ記事がありません。</p>}
-          {articles.map((a) => (
-            <ArticleRow key={a.href} item={a} />
+          {posts.length === 0 && <p className="py-10 text-muted">まだ記事がありません。</p>}
+          {posts.map((p) => (
+            <ArticleRow key={p.slug} post={p} />
           ))}
         </div>
       </section>

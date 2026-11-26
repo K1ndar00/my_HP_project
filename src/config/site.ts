@@ -8,8 +8,6 @@ export const site = {
   about: ["駆け出しエンジニアです。", "手を動かしながら、学んでいます。"],
   skills: ["TypeScript", "React", "Next.js", "Tailwind CSS", "Node.js", "Git / GitHub", "HTML / CSS"],
   social: { github: "K1ndar00" },
-  // 記事を書いているサービスのユーザー名。入力すると記事一覧に自動で取り込まれます。
-  articles: { note: "", qiita: "", zenn: "" },
 } as const;
 
 export const navItems = [
